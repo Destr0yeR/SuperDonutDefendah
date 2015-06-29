@@ -2,9 +2,10 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload:
 
 function preload() {
 
-    game.load.image('space', 'assets/skies/deep-space.jpg');
-    game.load.image('bullet', 'assets/games/asteroids/bullets.png');
-    game.load.image('ship', 'assets/games/asteroids/ship.png');
+    game.load.image('space', 'assets/deep-space.jpg');
+    game.load.image('bullet', 'assets/bullets.png');
+    game.load.image('ship', 'assets/ship.png');
+    game.load.image('crosshair','assets/greenCrosshair.png');
 
 }
 
@@ -14,6 +15,11 @@ var cursors;
 var bullet;
 var bullets;
 var bulletTime = 0;
+
+var crosshair;
+
+var movingRight=0;
+var movingUp=0;
 
 function create() {
 
@@ -33,7 +39,7 @@ function create() {
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
     //  All 40 of them
-    bullets.createMultiple(40, 'bullet');
+    bullets.createMultiple(50, 'bullet');
     bullets.setAll('anchor.x', 0.5);
     bullets.setAll('anchor.y', 0.5);
 
@@ -44,63 +50,127 @@ function create() {
     //  and its physics settings
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
-    sprite.body.drag.set(100);
-    sprite.body.maxVelocity.set(200);
+    sprite.body.drag.set(300);
+    sprite.body.maxVelocity.set(150);
+    sprite.body.collideWorldBounds = true;
 
     //  Game input
-    cursors = game.input.keyboard.createCursorKeys();
+    cursors = game.input.keyboard.createCursorsKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.W ]);
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.A ]);
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.S ]);
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.D ]);
+    
 
 }
 
 function update() {
-
-    if (cursors.up.isDown)
+    
+    if (game.input.keyboard.isDown(Phaser.Keyboard.W))
     {
-        game.physics.arcade.accelerationFromRotation(sprite.rotation, 200, sprite.body.acceleration);
+        sprite.body.velocity.y = -150;
+        sprite.angle = -90;
+        movingUp=1;
     }
     else
     {
-        sprite.body.acceleration.set(0);
+        if(game.input.keyboard.isDown(Phaser.Keyboard.S))
+        {
+            sprite.body.velocity.y = 150;
+            sprite.angle = 90;
+            movingUp=-1;
+        }
+        else
+        {
+            movingUp=0;
+        }
     }
 
-    if (cursors.left.isDown)
+    if(game.input.keyboard.isDown(Phaser.Keyboard.A))
     {
-        sprite.body.angularVelocity = -300;
-    }
-    else if (cursors.right.isDown)
-    {
-        sprite.body.angularVelocity = 300;
+        sprite.body.velocity.x = -150;
+        sprite.angle = -180;
+        movingRight=-1;
+
     }
     else
     {
-        sprite.body.angularVelocity = 0;
+        if(game.input.keyboard.isDown(Phaser.Keyboard.D))
+        {
+            sprite.body.velocity.x = 150;
+            sprite.angle = 0;
+            movingRight=1;
+        }
+        else
+        {
+            movingRight=0;
+        }   
     }
+
+    if(movingUp==1)
+    {
+        if (movingRight==1)
+        {
+            sprite.angle=-45;
+        }
+        else
+        {
+            if(movingRight==-1)
+            {
+                sprite.angle=-135
+            }
+            else
+            {
+                sprite.angle=-90;
+            }
+        }
+    }
+    if(movingUp==-1)
+    {
+        if (movingRight==1)
+        {
+            sprite.angle=45;
+        }
+        else
+        {
+            if(movingRight==-1)
+            {
+                sprite.angle=135
+            }
+            else
+            {
+                sprite.angle=90;
+            }
+        }
+    }
+
+    //sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
     {
         fireBullet();
     }
 
-    screenWrap(sprite);
-
-    bullets.forEachExists(screenWrap, this);
 
 }
 
 function fireBullet () {
 
+    console.log(game.time.now);
     if (game.time.now > bulletTime)
     {
+        
         bullet = bullets.getFirstExists(false);
+        console.log(bullet);
 
         if (bullet)
         {
             bullet.reset(sprite.body.x + 16, sprite.body.y + 16);
-            bullet.lifespan = 2000;
+            bullet.lifespan = 4000;
             bullet.rotation = sprite.rotation;
             game.physics.arcade.velocityFromRotation(sprite.rotation, 400, bullet.body.velocity);
-            bulletTime = game.time.now + 50;
+            bulletTime = game.time.now + 250;
         }
     }
 

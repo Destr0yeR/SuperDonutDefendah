@@ -2,10 +2,10 @@ var game = new Phaser.Game(800, 600, Phaser.ARCADE, 'phaser-example', { preload:
 
 function preload() {
 
-    game.load.image('space', 'examples/assets/skies/sky1.png');
-    game.load.image('bullet', 'examples/assets/misc/bullet0.png');
-    game.load.image('ship', 'examples/assets/games/asteroids/ship.png');
-    game.load.image('enemy', 'examples/assets/virtualjoystick/beball1.png');
+    game.load.image('space', 'assets/img/sky1.png');
+    game.load.image('bullet', 'assets/img/bullet0.png');
+    game.load.image('ship', 'assets/img/ship.png');
+    game.load.image('enemy', 'assets/img/beball1.png');
 
 }
 function Enemy(_hit,_damage,_type){

@@ -1,5 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update});
-var buttons;
+var buttons_pos = [-50,50,150];
+var buttons_callbacks = ['playstate1','playstate2','playstate3']
 var cursors;
 function preload() {
     game.load.image('menu_title', 'assets/menu/menu_game_title.png');
@@ -86,7 +87,7 @@ function move(cursors , buttons){
 function tween(buttons,buttonNum){
 	game.add.tween(this.arrow)
             .to({
-                y: game.world.centerY + buttons.pos[buttonNum - 1]
+                y: game.world.centerY + buttons_pos[buttonNum - 1]
             }, this.arrow.moveDelay, Phaser.Easing.Quadratic.In)
             .start();
         this.arrow.currentButton = buttonNum;
@@ -99,7 +100,7 @@ function allowMovement(){
 }
 
 function activateButton(buttons , currentButton){
-	buttons[buttons.callbacks[currentButton - 1]]();
+	buttons[buttons_callbacks[currentButton - 1]]();
 }
 
 function update(){

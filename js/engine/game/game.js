@@ -61,13 +61,11 @@
 		return true;
 	}
 
-	GameSystem.prototype.createObject = function(name) {
+	GameSystem.prototype.createObject = function(name, x, y) {
 		var factory = this.factory;
 		if(this.keys.indexOf(name) >= 0) {
-			factory.create(name);
-			return true;
+			factory.create(name, x, y);
 		}
-		return true;
 	}
 	GameSystem.prototype.loadScript = function(name) {
 		this.file.load(name);

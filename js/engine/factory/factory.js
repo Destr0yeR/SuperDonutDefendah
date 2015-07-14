@@ -11,7 +11,7 @@
 
 		function create(name, x, y) {
 			this.game = Constants.game();
-			this.window = Constants.window();
+			this.window = Constants.getWindow();
 			this.dimension = Constants.dimension();
 
 			if(this.groups[name]){

@@ -1,69 +1,74 @@
-var GameSystem = (function() {
-	this.game = null;
-	this.width = 0;
-	this.height = 0;
+	
+	var GameSystem = function() {
+		this.game 	= null;
+		this.width 	= 0;
+		this.height = 0;
 
-	this.states = [];
-	this.keys = [];
+		this.states = [];
+		this.keys 	= [];
+	}
 
-	return {
-		create: create,
-		addState: addState,
-		loadState: loadState,
-		loadImage: loadImage,
-		loadSheet: loadSheet,
-		createObject: createObject
-	};
-
-	function create(width, height) { 
+	GameSystem.prototype.create = function(width, height) { 
 		this.width = width;
 		this.height = height;
 		this.game = new Phaser.Game(width, height, Constants.typeRender(), 'game');
 		Constants.setGame(this.game);
 		Constants.setWindow({w: width, h: height});
+
+		this.file 		= new FileSystem(this.game);
+		this.render 	= new RenderSystem(this.game);
+		this.factory 	= new ObjectFactory(this.game);
+		this.state 		= new StateSystem(this.game);
 	}
 
-	function addState(name, class) {
+	GameSystem.prototype.addState = function(name, _class) {
+		var state = this.state;
 		if(this.states.indexOf(name) >= 0){
 			return false;
 		}
-		State.addState(name, class);
+		this.state.add(name, _class);
 		this.states.push(name);
 		return true;
 	}
 
-	function loadState(name) {
+	GameSystem.prototype.loadState = function(name) {
+		var state = this.state;
 		if(this.states.indexOf(name) >= 0){
-			State.load(name);
+			state.load(name);
 			return true;
 		}
 		return false;
 	}
 
-	function loadImage(name, url) {
+	GameSystem.prototype.loadImage = function(name, url) {
+		var render = this.render;
 		if(this.keys.indexOf(name) >= 0) {
 			return false;
 		}
 		this.keys.push(name);
-		Render.loadImage(name, url);
+		render.loadImage(name, url);
 		return true;
 	}
 
-	function loadSheet(name, url) {
+	GameSystem.prototype.loadSheet = function(name, url) {
+		var render = this.render;
 		if(this.keys.indexOf(name) >= 0) {
 			return false;
 		}
 		this.keys.push(name);
-		Render.loadSheet(name, url);
+		render.loadSheet(name, url);
 
 		return true;
 	}
 
-	function createObject(name) {
+	GameSystem.prototype.createObject = function(name) {
+		var factory = this.factory;
 		if(this.keys.indexOf(name) >= 0) {
-			ObjectFactory.create(name);
+			factory.create(name);
 			return true;
 		}
 		return true;
 	}
-})();
+	GameSystem.prototype.loadScript = function(name) {
+		this.file.load(name);
+	}

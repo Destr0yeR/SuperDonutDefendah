@@ -1,21 +1,15 @@
-var Render = (function() {
-	this.game = {};
-	this.dimenssion = 0;
 
-	return {
-		loadImage: loadImage,
-		loadSheet: loadSheet
+	var RenderSystem = function(game) {
+		this.game = game;
+		this.dimenssion = 0;
 	}
-
-	function loadImage (name, url) {
+	RenderSystem.prototype.loadImage = function(name, url) {
 		this.game = Constants.game();
-		this.game.load.image(name, url);
-	}
+		this.game.load.image(name, url, true);
+	};
 
-	function loadSheet (name, url) {
+	RenderSystem.prototype.loadSheet = function(name, url) {
 		this.game = Constants.game();
 		this.dimenssion = Constants.dimenssion();
-		this.game.load.spritesheet(name, url, this.dimenssion, this.dimenssion);
-	}
-
-})();
+		this.game.load.spritesheet(name, url, this.dimenssion, this.dimenssion, true);
+	};

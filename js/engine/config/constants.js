@@ -1,6 +1,6 @@
 var Constants = (function() {
 
-	this.game = null;
+	this._game = null;
 	this.window = null;
 	this.dimension = 32;
 
@@ -9,10 +9,10 @@ var Constants = (function() {
 			return Phaser.AUTO; 
 		},
 		game: function() {
-			return this.game;
+			return this._game;
 		},
 		setGame: function(game) {
-			this.game = game;
+			this._game = game;
 		},
 		window: function() {
 			return this.window;

@@ -4,12 +4,12 @@
 
 	SDD.gameSystem = gameSystem;
 
-	gameSystem.state.add('Init', SDD.Init);
-	gameSystem.state.add('Boot', SDD.Boot);
-	gameSystem.state.add('Menu', SDD.Menu);
-	gameSystem.state.add('HowTo', SDD.HowTo);
-	gameSystem.state.add('Game', SDD.Game);
-	gameSystem.state.add('GameOver', SDD.GameOver);
-	gameSystem.state.add('Credits', SDD.Credits);
+	gameSystem.addState('Init', SDD.Init);
+	gameSystem.addState('Boot', SDD.Boot);
+	gameSystem.addState('Menu', SDD.Menu);
+	gameSystem.addState('HowTo', SDD.HowTo);
+	gameSystem.addState('Game', SDD.Game);
+	gameSystem.addState('GameOver', SDD.GameOver);
+	gameSystem.addState('Credits', SDD.Credits);
 
-	gameSystem.state.load('Init');
+	gameSystem.loadState('Init');

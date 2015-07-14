@@ -13,7 +13,7 @@
 	};
 
 	SDD.Init.prototype.create = function() {
-		this.game.state.start('Game');
+		this.gameSystem.loadState('Game');
 	};
 
 	SDD.Init.prototype.update = function() {

@@ -14,7 +14,7 @@ var Constants = (function() {
 		setGame: function(game) {
 			this._game = game;
 		},
-		window: function() {
+		getWindow: function() {
 			return this.window;
 		},
 		setWindow: function(window) {

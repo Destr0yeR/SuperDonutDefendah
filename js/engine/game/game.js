@@ -67,6 +67,13 @@
 			factory.create(name, x, y);
 		}
 	}
+
 	GameSystem.prototype.loadScript = function(name) {
 		this.file.load(name);
 	}
+
+	GameSystem.prototype.putTile = function(key, x, y, w, h) {
+		var render = this.render;
+
+		render.putTile(key, x, y, w, h);
+	};

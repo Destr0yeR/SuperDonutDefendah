@@ -61,6 +61,7 @@ function create() {
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.A ]);
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.S ]);
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.D ]);
+    game.input.keyboard.addKeyCapture([ Pahser.Keyboard.J ]);
     
 
 }

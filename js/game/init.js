@@ -6,10 +6,12 @@
 	}
 
 	SDD.Init.prototype.preload = function() {
-		
 	};
 
 	SDD.Init.prototype.create = function() {
+		console.log(this);
+		this.gameSystem.init();
+		this.gameSystem.initInput(this);
 		this.gameSystem.loadState('Game');
 	};
 

@@ -14,8 +14,9 @@
 	SDD.Game.prototype.create = function() {
 		this.gameSystem.putTile('space',0, 0, this.game.width, this.game.height);
 		this.gameSystem.createObject('ship',this.game.width/2,this.game.height/2);
+		this.gameSystem.setAnchorCenter('ship');
 	};
 
 	SDD.Game.prototype.update = function() {
-		
+		this.gameSystem.update();
 	};

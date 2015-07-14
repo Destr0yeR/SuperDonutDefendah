@@ -19,6 +19,7 @@
 		this.render 	= new RenderSystem(this.game);
 		this.factory 	= new ObjectFactory(this.game);
 		this.state 		= new StateSystem(this.game);
+		this.input		= new InputHandler(this.game);
 	}
 
 	GameSystem.prototype.addState = function(name, _class) {
@@ -77,3 +78,27 @@
 
 		render.putTile(key, x, y, w, h);
 	};
+
+	GameSystem.prototype.init = function(){
+		this.game.renderer.clearBeforeRender = false;
+    	this.game.renderer.roundPixels = true;
+    	this.game.physics.startSystem(Constants.typeCollision());
+	}
+
+	GameSystem.prototype.setAnchorCenter = function(name){
+		this.setAnchor(name, 0.5);
+	}
+
+	GameSystem.prototype.setAnchor = function(name, anchor){
+		var factory = this.factory;
+		var render  = this.render;
+		render.setAnchor(factory.getGroup(name), anchor);
+	};
+
+	GameSystem.prototype.update = function() {
+		this.input.update();
+	};
+
+	GameSystem.prototype.initInput = function(_class) {
+		this.input.init(_class);
+	}

@@ -25,3 +25,8 @@
 	RenderSystem.prototype.putTile = function(key, x, y, w, h) {
 		this.game.add.tileSprite(x, y, w, h, key);
 	};
+
+	RenderSystem.prototype.setAnchor = function(group, anchor) {
+		group.setAll('anchor.x', anchor);
+		group.setAll('anchor.y', anchor);
+	};

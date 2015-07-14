@@ -38,4 +38,9 @@
 		}
 
 		this.groups[name].create(_x, _y, name);
+		this.groups[name].setAll('drag', 300);
 	};
+
+	ObjectFactory.prototype.getGroup = function(name){
+		return this.groups[name];
+	}

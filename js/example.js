@@ -23,6 +23,7 @@ var movingUp=0;
 
 function create() {
 
+console.log(this);
     //  This will run in Canvas mode, so let's gain a little speed and display
     game.renderer.clearBeforeRender = false;
     game.renderer.roundPixels = true;

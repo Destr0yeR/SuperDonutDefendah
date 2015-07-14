@@ -1,15 +1,25 @@
-	
+
 	var InputHandler = function (game) {
 		this.game = game;
-		this.stateMachine = new StateMachine;
-		this.pad = game.input.gamepad.pad1;
+		this.pad = null;
+	};
 
+	InputHandler.prototype.init = function(_class){
+		this.stateMachine = new StateMachine();
+		this.game.input.gamepad.start();
+		this.pad = this.game.input.gamepad.pad1;
+		this._class = _class;
+
+		this.input = new Input(this.pad, this._class);
+		
+		this.pad.addCallbacks(this.game, { onConnect: this.input.setXboxKeys });
+		
 		this.button = {};
 		this.buttons = null;
-
-		this.setKeys();
+		onDown = this.onDown;
+		onUp = this.onUp;
 		this.initDefault();
-	};
+	}
 
 	InputHandler.prototype.getState = function() {
 		this.stateMachine.getState();
@@ -20,7 +30,7 @@
 	};
 
 	InputHandler.prototype.handleInput = function(){
-
+		this.input.updateXbox();
 	};
 
 	InputHandler.prototype.bindInput = function(key, button_bind){
@@ -36,11 +46,4 @@
 
 	InputHandler.prototype.initDefault = function() {
 		
-	};
-
-	InputHandler.prototype.setKeys = function() {
-		this.buttonA = this.pad.getButton(Phaser.Gamepad.XBOX360_A);
-	    this.buttonB = this.pad.getButton(Phaser.Gamepad.XBOX360_B);
-	    this.buttonX = this.pad.getButton(Phaser.Gamepad.XBOX360_X);
-	    this.buttonY = this.pad.getButton(Phaser.Gamepad.XBOX360_Y);
 	};

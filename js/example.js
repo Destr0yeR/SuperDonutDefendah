@@ -5,7 +5,7 @@ function preload() {
     game.load.image('space', 'assets/deep-space.jpg');
     game.load.image('bullet', 'assets/bullets.png');
     game.load.image('ship', 'assets/ship.png');
-    game.load.image('crosshair','assets/greenCrosshair.png');
+    game.load.image('crosshair','assets/green_Crosshair.png');
 
 }
 
@@ -20,6 +20,10 @@ var crosshair;
 
 var movingRight=0;
 var movingUp=0;
+
+var teleportActivated=false;
+
+var formerMouse=-1;
 
 function create() {
 
@@ -44,7 +48,7 @@ function create() {
     bullets.setAll('anchor.y', 0.5);
 
     //  Our player ship
-    sprite = game.add.sprite(300, 300, 'ship');
+    sprite = game.add.sprite(400, 300, 'ship');
     sprite.anchor.set(0.5);
 
     //  and its physics settings
@@ -61,8 +65,9 @@ function create() {
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.A ]);
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.S ]);
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.D ]);
-    game.input.keyboard.addKeyCapture([ Pahser.Keyboard.J ]);
+    game.input.keyboard.addKeyCapture([ Pahser.Keyboard.Q ]);
     
+    game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
 }
 
@@ -148,22 +153,54 @@ function update() {
 
     //sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+    /*if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
     {
         fireBullet();
     }
 
+    if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){
+        if(!teleportActivated)
+        {            
+            activateCrosshair();
+        }else
+        {
+            executeTeleport();
+        }
+    }
+    */
+    
+    verifyMouseInputs();
+    if(teleportActivated)
+    {
+        moveCrosshair();
+    }
+}
 
+function activateCrosshair()
+{
+    crosshair = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y, 'crosshair');
+    crosshair.anchor.set(0.5);
+     teleportActivated=true;
+}
+function moveCrosshair()
+{
+    crosshair.x=game.input.mousePointer.x;
+    crosshair.y=game.input.mousePointer.y;
+}
+function executeTeleport()
+{
+    sprite.x=crosshair.x;
+    sprite.y=crosshair.y;
+    crosshair.destroy();
+    teleportActivated=false;
 }
 
 function fireBullet () {
 
-    console.log(game.time.now);
     if (game.time.now > bulletTime)
     {
         
         bullet = bullets.getFirstExists(false);
-        console.log(bullet);
 
         if (bullet)
         {
@@ -197,6 +234,32 @@ function screenWrap (sprite) {
         sprite.y = 0;
     }
 
+}
+function verifyMouseInputs()
+{
+     if (game.input.mouse.button==2){
+         if (this.formerMouse!=2) {
+          if(!teleportActivated)
+            {            
+                activateCrosshair();
+            }else
+            {
+                executeTeleport();
+            }
+        }
+     }
+     else
+    {
+       if (game.input.mouse.button==0)
+       {
+         if (this.formerMouse!=-1) 
+         {
+           fireBullet();
+         }
+       }
+    }
+     
+    this.formerMouse=game.input.mouse.button;
 }
 
 function render() {
